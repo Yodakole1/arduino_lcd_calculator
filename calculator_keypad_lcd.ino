@@ -2,6 +2,8 @@
 #include <LiquidCrystal.h>
 
 
+//Initialize keypad
+
 const int dim = 4;
 char dugmici[dim][dim]={
   {'1','2','3','A'},
@@ -14,16 +16,17 @@ byte pinovi_vrsta[dim]= {13,10,9,8};
 byte pinovi_kolona[dim] = {7,6, A0, A1};
 
 Keypad key = Keypad(makeKeymap(dugmici),pinovi_vrsta,pinovi_kolona,dim,dim);
-
 boolean rezultat = false;
 long  rez = 0;
 int broj = 0;
 int broj2=-1;
 char znak = ' ';
 char taster;
+//Initialize lcd
 const int RS = 11, EN = 12, D4 = 2, D5 = 3, D6 = 4, D7 = 5;
 LiquidCrystal lcd(RS, EN, D4, D5, D6, D7);
 
+//Setup for lcd and put analog pins to digital
 void setup() {
   Serial.begin(9600);
   lcd.begin(16,2);
@@ -38,7 +41,7 @@ void setup() {
 
 }
 
-
+//main code
 void loop() {
   taster = key.getKey();
   if (taster!=NO_KEY) {
@@ -50,7 +53,7 @@ void loop() {
   }
 }
 
-
+//*Output part
 void ispis(){
   if (broj2==-1) {
     lcd.setCursor(0,0);
@@ -64,7 +67,7 @@ void ispis(){
   }
   
   }
-
+//Calculating part
 long  Racunanje(){
   rez=0;
   if (znak=='+') {
@@ -105,7 +108,7 @@ long  Racunanje(){
   }
   rezultat=false;
 }
-
+//IF c is pressed on keypad (cancel)
 void cancel(){
   rez=broj=0;
   broj2=-1;
@@ -117,7 +120,7 @@ void cancel(){
   lcd.clear();
 
 }
-
+//Pressed button
 void Pritisnut_taster() {
   if (taster=='C') {
     cancel();
@@ -230,9 +233,10 @@ void Pritisnut_taster() {
      broj=0;
     }
   }
-
+  //Delay isnt needed but looks better on lcd 
   delay(150);
   ispis();
 }
+
 
 
